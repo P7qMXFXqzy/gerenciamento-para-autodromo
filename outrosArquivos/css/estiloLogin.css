@@ -1,0 +1,138 @@
+body, html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .inputs, .textos, #botaoLogin, #textoLogo, #imagemLogo, #botaoVisualizarSenha{position:absolute}
+
+  /*imagem de fundo*/
+  #fundo{
+    background-image: url("imagens/fundo2.png");
+    width: 100%;
+    height: 100%;
+    filter:blur(3px);
+  }
+  
+  /*textos que aparecerão ao lado dos inputs*/
+  .textos{
+    font-size:50px;
+    font-family:'Franklin Gothic Medium';
+    left:15%;
+    text-shadow: 2px 0 rgb(255,255,0, 0.8), -2px 0 rgb(255,255,0, 0.8), 0 2px rgb(255,255,0, 0.8), 0 -2px rgb(255,255,0, 0.8), 1px 1px rgb(255,255,0, 0.8), -1px -1px rgb(255,255,0, 0.8), 1px -1px rgb(255,255,0, 0.8), -1px 1px rgb(255,255,0, 0.8);
+  }
+  #textoNome{
+    top:28%;
+  }
+  #textoSenha{
+    top:48%;
+  }
+  /*botão de efetuar login*/
+  #botaoLogin{
+    top:74%;
+    left:44%;
+    font-family:'Lucida Sans';
+    font-size:35px;
+    height:80px;
+    width:120px;
+    background-color:rgb(30,30,30);
+    color:black;
+    text-shadow: 2px 0 rgb(255,255,0, 0.8), -2px 0 rgb(255,255,0, 0.8), 0 2px rgb(255,255,0, 0.8), 0 -2px rgb(255,255,0, 0.8), 1px 1px rgb(255,255,0, 0.8), -1px -1px rgb(255,255,0, 0.8), 1px -1px rgb(255,255,0, 0.8), -1px 1px rgb(255,255,0, 0.8);
+  }
+  #botaoLogin:active{
+    top:75%;
+    text-shadow: 2px 0 rgb(0,255,0), -2px 0 rgb(0,255,0), 0 2px rgb(0,255,0), 0 -2px rgb(0,255,0), 1px 1px rgb(0,255,0), -1px -1px rgb(0,255,0), 1px -1px rgb(0,255,0), -1px 1px rgb(0,255,0);
+
+  }
+  /*texto da logo*/
+  #textoLogo{
+    font-size:70px;
+    top:-5%;
+    left:27%;
+    font-family:Impact;
+    color:rgb(150,150,150);
+    text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black, 1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black;
+  }
+
+  /*imagem da logo*/
+  #imagemLogo{
+    top:4%;
+    left: 52%;
+    width:130px;
+    height:130px;
+    border-radius:80px;
+  }
+
+  /*botão para visualizar a senha inserida*/
+  #botaoVisualizarSenha{
+    top:56%;
+    left:74%;
+    background-color:rgb(30,30,30);
+    width:71px;
+    height:47px;
+    border-radius:50px;
+  }
+  #visualizarImagem{
+    width:58px;
+    height:40px;
+  }
+  #botaoVisualizarSenha:active{top:56.5%;}
+
+  /*definição dos elementos que utilizarão a animação de fade-in*/
+  #fundo, #botaoLogin, .textos, #textoLogo, #imagemLogo, #botaoVisualizarSenha{
+    animation: animacaoFadeIn ease 7s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  /*efeito de fade-in (após a página carregar)*/
+  @keyframes animacaoFadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+  
+  /*estilo dos inputs*/
+  .inputs{
+    left:27%;
+    height:60px;
+    font-size:50px;
+    border-style: solid;
+    border-color: black;
+    border-width:2px;
+    border-radius:20px;
+    text-align:left;
+    background-color: rgb(220,220,220);
+    width:600px;
+  }
+
+  /*ligar animação aos inputs*/
+  #inputNome{
+    animation: animacaoEscorregarNome ease 4s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  #inputSenha{
+    animation: animacaoEscorregarSenha ease 4s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  /*animação de "escorregar pra baixo" dos inputs*/
+  @keyframes animacaoEscorregarNome{
+    0%{
+      top:-40%;
+    }
+    100%{
+      top:35%
+    }
+  }
+  @keyframes animacaoEscorregarSenha{
+    0%{
+      top:-20%;
+    }
+    100%{
+      top:55%
+    }
+  }
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SK - Página Inicial</title>
+    <link rel = "stylesheet" href = "estiloLogin.css">
+    <link rel="icon" href = imagens/logo.png>
+</head>
+<style>
+    
+</style>
+<body>
+    <div id="fundo"></div>
+    
+    <form action="/login" method="post">
+        <input class="inputs" id="inputNome" type="text">
+        <input class="inputs" id="inputSenha" type="password">
+        <button id="botaoLogin" type="submit" >Login</button>
+    </form>
+    
+    <p class="textos" id="textoNome">Nome</p>
+    <p class="textos" id="textoSenha">Senha</p>
+    <p id="textoLogo">Swift Kart</p>
+    <img src="imagens/logo.png" id="imagemLogo">
+    <button id="botaoVisualizarSenha" onclick="visualizarSenha()">
+        <img id = "visualizarImagem" src="imagens/visualizar.png">
+    </button>
+
+    <script>
+        //ativar ou desativar a visibilidade da senha
+        function visualizarSenha(){
+            if(document.getElementById("inputSenha").type ==="password"){document.getElementById("inputSenha").type = "text"}
+            else{document.getElementById("inputSenha").type = "password"}
+        }
+    </script>
+</body>
+</html>
