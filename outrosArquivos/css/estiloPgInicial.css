@@ -1,0 +1,25 @@
+#body, html{
+    background-color: rgb(10,10,10);
+    overflow: hidden;
+    margin: 0;
+    padding: 0;  
+}
+#botaoUsuario{position:absolute;}
+
+#botaoUsuario{
+    background:none;
+    border:0px;
+    height:60px; 
+    width:60px;
+    border-radius:50%;
+    top:1%;
+    left:94%;
+}
+#imagemUsuario{
+    height:60px; 
+    width:60px;
+    border-radius:50%;
+}
+#botaoUsuario:active{
+    top:1.5%;
+}
