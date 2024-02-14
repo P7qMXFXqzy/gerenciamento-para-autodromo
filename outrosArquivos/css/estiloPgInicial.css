@@ -6,7 +6,7 @@
 }
 
 /*definição da posição "absolute" para todos os elementos que será necessário*/
-#botaoUsuario, #logo, #botaoNotificacao, #textoNotificacao{position:absolute;}
+#botaoUsuario, #logo, #botaoNotificacao, #textoNotificacao, #painelDeControle{position:absolute;}
 
 /*botão para acessar a página de perfil do usuário*/
 #botaoUsuario{
@@ -46,6 +46,7 @@
   top:2.8%;
   left:85%;
 }
+#botaoNotificacao:active{top:3%;}
 #imagemNotificacao{
   height:50px; 
   width:50px;
@@ -59,4 +60,12 @@
   left:-300%;
   max-width:350px;
   word-wrap:break-word;
+}
+
+/*link para o painel de controle (onde ocorrerá interação direta com o banco de dados) */
+#painelDeControle{
+  top:14%;
+  left:7%;
+  color:blue;
+  font-size:15px;
 }

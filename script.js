@@ -11,12 +11,18 @@ app.use(bodyParser.urlencoded({extended: true}));
 //ativação do EJS, será usado para passar dados de uma página para outra
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/outrosArquivos');
+
 //executar conexão com o banco de dados
 const { MongoClient } = require("mongodb");
 const uri = "mongodb://localhost:27017";
+
 //variável que armazenará os dados do usuário conectado
 let usuarioConectado = null;
 
+//gerar alertas na tela (geralmente utilizada em caso de erros)
+function gerarAlerta(titulo, conteudo){
+  notificador.notify({title: titulo, message: conteudo, icon:"./outrosArquivos/css/imagens/logo.png"});
+}
 //buscar usuário no banco de dados através do nome e senha inseridos
 async function login(usuarioInserido, senhaInserida) {
   const client = new MongoClient(uri);
@@ -38,7 +44,7 @@ function checarSePfpExiste(idUsuario){
 }
 
 //ativar arquivos css em todas as páginas
-app.use(["/login","/pagina_inicial"], express.static(path.join(__dirname, "outrosArquivos\\css")));
+app.use(["/login","/pagina_inicial", "/pagina_inicial/painelDeControle"], express.static(path.join(__dirname, "outrosArquivos\\css")));
 
 //redirecionar o usuário para a página de login caso o usuário não tenha digitado nenhuma página na barra de pesquisa.
 app.get("/", (req,res) => {
@@ -70,6 +76,18 @@ app.get("/pagina_inicial", (req,res) => {
     });
   }
 })
+//não permitir nenhum tipo de usuário além do Gestor acessar o painel de controle
+app.get("/pagina_inicial/painelDeControle", (req,res) => {
+  if(usuarioConectado === null){res.redirect("/login")}
+  else{
+    usuarioConectado.then(function(result){
+      //checar qual o tipo do usuário e definir qual das 3 versões da página inicial vai ser aberta
+      if(result["tipo"] ==="Gestor"){res.sendFile(path.join(__dirname, "\\outrosArquivos\\painel_de_controle.html"));;}
+      else{res.redirect("/pagina_inicial")}
+    });
+  }
+})
+
 
 //extrair dados inseridos nos inputs e tentar um login com estes dados inseridos, redirecionar para a página inicial caso o login tenha sido bem sucedido, mostrar uma notificação caso o login tenha sido mal-sucedido
 app.post("/login", (req,res) => {
@@ -82,7 +100,7 @@ app.post("/login", (req,res) => {
       res.redirect("/pagina_inicial");
     }
     else{
-      notificador.notify({title: "Login mal sucedido!", message:"Seu login foi mal sucedido! Por favor tente novamente", icon:"./outrosArquivos/css/imagens/logo.png"});
+      gerarAlerta("Login mal sucedido!", "Houve um erro durante sua tentativa de login! Por favor tente novamente.")
       res.status(204).send();
     }
   })

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Swift Kart - Painel de controle</title>
+    <link rel = "stylesheet" href = "estiloPainel.css">
+    <link rel="icon" href = imagens/logo.png>
+</head>
+<body>
+    <form action="/inserirNovoUsuario" method="post">
+        <div id="divInserirNovoUsuario">
+            <p class = "titulos" id="titulo_novo_usuario">Inserir novo usuário</p>
+            <input class="inputs" id="inserir_usuario_id" placeholder="id">
+            <input class="inputs" id="inserir_usuario_nome" placeholder="nome">
+            <input class="inputs" id="inserir_usuario_senha" placeholder="senha">
+            <input class="inputs" id="inserir_usuario_tipo" placeholder="tipo">
+            <button class = "botoes" id="botao_novo_usuario" type="submit">Confirmar</button>
+        </div>
+    </form>
+
+    <form action="/deletarUsuario" method="post">
+        <div id="divDeletarUsuario">
+            <p class = "titulos" id="titulo_deletar_usuario">Deletar Usuário</p>
+            <input class="inputs" id="deletar_usuario_id" placeholder="id">
+            <button class = "botoes" id="botao_deletar_usuario" type="submit">Confirmar</button>
+        </div>
+    </form>
+
+    <form action="/inserirNovoKart" method="post">
+        <div id="divNovoKart">
+            <p class = "titulos" id="titulo_novo_kart">Inserir novo Kart</p>
+            <input class="inputs" id="inserir_kart_id" placeholder="id">
+            <input class="inputs" id="inserir_kart_nome" placeholder="nome">
+            <input class="inputs" id="inserir_kart_marca" placeholder="marca">
+            <input class="inputs" id="inserir_kart_modelo" placeholder="modelo">
+            <input class="inputs" id="inserir_kart_potencia" placeholder="potencia" type="number">
+            <input class="inputs" id="inserir_kart_marca_pneus" placeholder="marca dos pneus">
+            <input class="inputs" id="inserir_kart_status" placeholder="status">
+            <button class = "botoes" id="botao_inserir_kart" type="submit">Confirmar</button>
+        </div>
+    </form>
+
+    <form action="/editarDeletarKart" method="post">
+        <div id="divEditarKart">
+            <p class = "titulos" id="titulo_editar_kart">Editar/Deletar Kart</p>
+            <input class="inputs" id="inserir_kart_id" placeholder="id">
+            <input class="inputs" id="inserir_kart_status" placeholder="status (para edição apenas)">
+            <button class = "botoes" id="botao_editar_kart" type="submit">Editar</button>
+            <button class = "botoes" id="botao_deletar_kart" type="submit">Deletar</button>
+        </div>
+    </form>
+
+
+    <form action="/adicionarPista" method="post">
+        <div id="divAdicionarPista">
+            <p class = "titulos" id="titulo_adicionar_pista">Adicionar pista</p>
+            <input class = "inputs" id="inserir_id_pista" placeholder="id">
+            <input class = "inputs" id="inserir_nome_pista" placeholder="nome">
+            <input class = "inputs" id="inserir_comprimento_pista" placeholder="comprimento (em km)" type="number">
+            <input class = "inputs" id="inserir_qnt_boxes" placeholder="quantidade de boxes" type="number">
+            <input class = "inputs" id="inserir_quantidade_lugares" placeholder="quantidade de lugares" type="number">
+            <input class = "inputs" id="inserir_endereco" placeholder="endereço">
+            <button class="botoes" id="botao_inserir_pista">Confirmar</button>
+        </div>
+    </form>
+
+    <form action="/deletarPista" method="post">
+        <div id="divDeletarPista">
+            <p class = "titulos" id="titulo_deletar_pista">Deletar pista</p>
+            <input class = "inputs" id="deletar_id_pista" placeholder="id">
+            <button class="botoes" id="botao_deletar_pista">Deletar</button>
+        </div>
+    </form>
+
+    <script>
+    </script>
+</body>
+</html>
