@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Swift Kart</title>
+    <link rel = "stylesheet" href = "estiloPgInicial.css">
+    <link rel="icon" href = imagens/logo.png>
+</head>
+<body>
+    <button type="button" id="botaoUsuario">
+        <img id="imagemUsuario" src=<%= urlFotoUsuario %>>
+    </button>
+    <button id="botaoNotificacao" onclick="mostrarNotificacoes()">
+        <img id="imagemNotificacao" src="imagens/iconeNotificacao.png">
+        <p id="textoNotificacao" hidden>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
+    </button>
+    <p id="logo">Swift Kart</p>
+    
+    <script>
+      function mostrarNotificacoes(){
+        if(document.getElementById("textoNotificacao").hidden === true){document.getElementById("textoNotificacao").hidden = false;}
+        else{document.getElementById("textoNotificacao").hidden = true;}
+      }
+    </script>
+</body>
+</html>

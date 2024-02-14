@@ -4,8 +4,11 @@
     margin: 0;
     padding: 0;  
 }
-#botaoUsuario{position:absolute;}
 
+/*definição da posição "absolute" para todos os elementos que será necessário*/
+#botaoUsuario, #logo, #botaoNotificacao, #textoNotificacao{position:absolute;}
+
+/*botão para acessar a página de perfil do usuário*/
 #botaoUsuario{
     background:none;
     border:0px;
@@ -21,5 +24,39 @@
     border-radius:50%;
 }
 #botaoUsuario:active{
-    top:1.5%;
+    top:1.5%; 
+}
+
+#logo{
+    font-size:70px;
+    top:-10%;
+    left:1%;
+    font-family:Impact;
+    color:rgb(150,150,150);
+    text-shadow: 2px 0 rgb(150,0,0), -2px 0 rgb(150,0,0), 0 2px rgb(150,0,0), 0 -2px rgb(150,0,0), 1px 1px rgb(150,0,0), -1px -1px rgb(150,0,0), 1px -1px rgb(150,0,0), -1px 1px rgb(150,0,0);
+  }
+
+/*botão de notificação*/
+#botaoNotificacao{
+  background:none;
+  border:0px;
+  height:50px; 
+  width:50px;
+  border-radius:50%;
+  top:2.8%;
+  left:85%;
+}
+#imagemNotificacao{
+  height:50px; 
+  width:50px;
+  border-radius:50%;
+}
+#textoNotificacao{
+  color:black;
+  background-color:white;
+  font-size:15px;
+  top:70%;
+  left:-300%;
+  max-width:350px;
+  word-wrap:break-word;
 }

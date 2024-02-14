@@ -54,10 +54,19 @@ app.get("/pagina_inicial", (req,res) => {
   if(usuarioConectado === null){res.redirect("/login")}
   else{
     usuarioConectado.then(function(result){
-      if(checarSePfpExiste(result["_id"]) != false){
-       res.render('pagina_inicial.ejs',{urlFotoUsuario: "imagens/usuarios/"+result["_id"] + ".png"})
-      }
-      else{res.render('pagina_inicial.ejs',{urlFotoUsuario: "imagens/usuarios/semImagem.png"})}
+      let paginaRenderizada = "pagina_inicial_", fotoPerfil = "imagens/usuarios/";
+      
+      //checar qual o tipo do usuário e definir qual das 3 versões da página inicial vai ser aberta
+      if(result["tipo"] ==="Gestor"){paginaRenderizada = paginaRenderizada +"gestor.ejs";}
+      else if(result["tipo"] ==="Afiliado"){paginaRenderizada = paginaRenderizada + "afiliado.ejs";}
+      else{paginaRenderizada = paginaRenderizada + "comum.ejs";}
+      
+      //checar se o usuário já possui uma foto de perfil, utilizar o arquivo "semImagem.png" caso não.
+      if(checarSePfpExiste(result["_id"]) != false){fotoPerfil = fotoPerfil + result["_id"] + ".png";}
+      else{fotoPerfil = fotoPerfil + "semImagem.png";}
+
+      //renderizar página com os dados fornecidos acima
+      res.render(paginaRenderizada, {urlFotoUsuario:fotoPerfil});
     });
   }
 })
