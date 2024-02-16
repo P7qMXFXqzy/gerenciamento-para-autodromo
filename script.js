@@ -1,10 +1,13 @@
 const express = require('express');
 const fs = require("fs");
 const app = express();
-const port = 8000;
 const path = require('path');
 const notificador = require('node-notifier')
+const axios = require("axios")
 var bodyParser = require( 'body-parser' )
+const router = express.Router();
+const port = 8000;
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -12,9 +15,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/outrosArquivos');
 
-//executar conexão com o banco de dados
-const { MongoClient } = require("mongodb");
-const uri = "mongodb://localhost:27017";
 
 //variável que armazenará os dados do usuário conectado
 let usuarioConectado = null;
@@ -22,17 +22,6 @@ let usuarioConectado = null;
 //gerar alertas na tela (geralmente utilizada em caso de erros)
 function gerarAlerta(titulo, conteudo){
   notificador.notify({title: titulo, message: conteudo, icon:"./outrosArquivos/css/imagens/logo.png"});
-}
-//buscar usuário no banco de dados através do nome e senha inseridos
-async function login(usuarioInserido, senhaInserida) {
-  const client = new MongoClient(uri);
-  try {
-    const bdKartodromo = client.db('kartodromo');
-    const colecao = bdKartodromo.collection('usuarios');
-    const usuarioEncontrado = await colecao.findOne({ nome: usuarioInserido, senha: senhaInserida});
-    return usuarioEncontrado;
-  }
-  finally {await client.close();}
 }
 
 //checar se o usuário já possui uma foto de perfil (o arquivo png terá o mesmo id do usuário)
@@ -50,10 +39,14 @@ app.use(["/login","/pagina_inicial", "/pagina_inicial/painelDeControle"], expres
 app.get("/", (req,res) => {
   res.redirect("/login");
 })
+
 //mandar arquivo html da página de login quando usuário acessar a página
 app.get("/login", (req,res) => {
+  let usuarioInserido="Emir Gopal Skankar";
   res.sendFile(path.join(__dirname, "\\outrosArquivos\\paginaLogin.html"));
+
 })
+
 //permitir que o usuário acesse a página inicial apenas com um login, redirecionará para a página de login caso um login não tenha sido feito anteriormente (impedindo que o usuário "invada" a página através da barra de pesquisa) 
 //cada tipo de usuário terá um tipo de página diferente, contendo botões específicos dependendo do tipo do usuário
 app.get("/pagina_inicial", (req,res) => {
@@ -73,9 +66,11 @@ app.get("/pagina_inicial", (req,res) => {
 
       //renderizar página com os dados fornecidos acima
       res.render(paginaRenderizada, {urlFotoUsuario:fotoPerfil});
+  
     });
   }
 })
+
 //não permitir nenhum tipo de usuário além do Gestor acessar o painel de controle
 app.get("/pagina_inicial/painelDeControle", (req,res) => {
   if(usuarioConectado === null){res.redirect("/login")}
@@ -90,12 +85,12 @@ app.get("/pagina_inicial/painelDeControle", (req,res) => {
 
 
 //extrair dados inseridos nos inputs e tentar um login com estes dados inseridos, redirecionar para a página inicial caso o login tenha sido bem sucedido, mostrar uma notificação caso o login tenha sido mal-sucedido
-app.post("/login", (req,res) => {
+app.post("/login", async(req,res) => {
   const usuarioInserido = req.body.inputNome;
-  const senhaInserido = req.body.inputSenha;
-  req.body.inputSenha.text = "a"
-  usuarioConectado = login(usuarioInserido, senhaInserido);
-  usuarioConectado.then(function(result){
+  const senhaInserida = req.body.inputSenha;
+  const requisicao = await axios.get("http://localhost:9000/login?usuarioInserido=" + usuarioInserido + "&senhaInserida=" + senhaInserida); 
+  console.log(requisicao.data)
+  /*usuarioConectado.then(function(result){
     if(result != null){
       res.redirect("/pagina_inicial");
     }
@@ -103,11 +98,11 @@ app.post("/login", (req,res) => {
       gerarAlerta("Login mal sucedido!", "Houve um erro durante sua tentativa de login! Por favor tente novamente.")
       res.status(204).send();
     }
-  })
+  })*/
   
 })
-  
+
 //executar servidor na porta 8000
 app.listen(port, () => {
-    console.log(`rodando na porta ${port}`)
+    console.log(`rodando na porta ${port}`)      
   })
