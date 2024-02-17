@@ -3,3 +3,50 @@
     margin: 0;
     padding: 0;  
 }
+
+.regiao_novo_usuario, .regiao_deletar_usuario, .regiao_novo_kart, .regiao_editar_kart, .regiao_adicionar_pista, .regiao_deletar_pista{position:absolute;}
+
+.titulos{
+    color:red;
+    font-size:30px;
+}
+.inputs{
+    width:200px;
+    height:20px;
+    font-size:18px;
+    text-align:left;
+}
+.botoes{
+    background-color:blue;
+    border: solid;
+    border-width:2px;
+    border-color:rgb(100,100,100);
+    font-size:20px;
+}
+/*definição da posição horizontal dos elementos*/
+.regiao_novo_usuario, .regiao_editar_kart{left:1%;}
+.regiao_deletar_usuario, .regiao_adicionar_pista{left:40%;}
+.regiao_novo_kart, .regiao_deletar_pista{left:70%}
+
+/*definição da posição vertical dos elementos (metade inferior superior da tela)*/
+#titulo_novo_usuario, #titulo_deletar_usuario, #titulo_novo_kart{top:-3%;}
+#inserir_usuario_id, #deletar_usuario_id, #inserir_kart_id{top:8%;}
+#inserir_usuario_nome, #botao_deletar_usuario, #inserir_kart_nome{top:13%;}
+#inserir_usuario_senha, #inserir_kart_marca{top:18%;}
+#inserir_usuario_tipo, #inserir_kart_modelo{top:23%;}
+#botao_novo_usuario, #inserir_kart_potencia{top:28%;}
+#inserir_kart_marca_pneus{top:33%;}
+#inserir_kart_status{top:38%;}
+#botao_inserir_kart{top:43%;}
+
+/*definição da posição vertical dos elementos (metade inferior da tela)*/
+#titulo_editar_kart, #titulo_adicionar_pista, #titulo_deletar_pista{top:50%;}
+#inserir_kart_id_edicao, #inserir_id_pista, #deletar_id_pista{top:60%;}
+#editar_kart_status, #inserir_nome_pista, #botao_deletar_pista{top:65%;}
+#botao_editar_kart, #inserir_comprimento_pista{top:70%;}
+#botao_deletar_kart, #inserir_qnt_boxes{top:75%;}
+#inserir_quantidade_lugares{top:80%;}
+#inserir_endereco{top:85%;}
+#botao_inserir_pista{top:90%;}
+
+#botao_deletar_kart{background-color: rgb(200,200,0);}

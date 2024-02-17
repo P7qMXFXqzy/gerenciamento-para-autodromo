@@ -17,7 +17,7 @@ app.set('views', __dirname + '/outrosArquivos');
 
 
 //variável que armazenará os dados do usuário conectado
-let usuarioConectado = null;
+let usuarioConectado = undefined;
 
 //gerar alertas na tela (geralmente utilizada em caso de erros)
 function gerarAlerta(titulo, conteudo){
@@ -35,52 +35,53 @@ function checarSePfpExiste(idUsuario){
 //ativar arquivos css em todas as páginas
 app.use(["/login","/pagina_inicial", "/pagina_inicial/painelDeControle"], express.static(path.join(__dirname, "outrosArquivos\\css")));
 
-//redirecionar o usuário para a página de login caso o usuário não tenha digitado nenhuma página na barra de pesquisa.
+//redirecionar o usuário para a página de login caso o usuário não tenha digitado nenhuma página na barra de pesquisa, ou para a página inicial caso o mesma já tenha feito um login anteriormente.
 app.get("/", (req,res) => {
-  res.redirect("/login");
+  if(usuarioConectado === undefined){res.redirect("/login")}
+  else{res.redirect("/pagina_inicial")}
 })
 
-//mandar arquivo html da página de login quando usuário acessar a página
+//mandar arquivo html da página de login quando usuário acessar a página e reiniciar varíavel "usuarioConectado"
 app.get("/login", (req,res) => {
-  let usuarioInserido="Emir Gopal Skankar";
+  usuarioConectado = undefined;
   res.sendFile(path.join(__dirname, "\\outrosArquivos\\paginaLogin.html"));
-
 })
 
 //permitir que o usuário acesse a página inicial apenas com um login, redirecionará para a página de login caso um login não tenha sido feito anteriormente (impedindo que o usuário "invada" a página através da barra de pesquisa) 
 //cada tipo de usuário terá um tipo de página diferente, contendo botões específicos dependendo do tipo do usuário
 app.get("/pagina_inicial", (req,res) => {
-  if(usuarioConectado === null){res.redirect("/login")}
+  if(usuarioConectado === undefined){res.redirect("/login")}
   else{
-    usuarioConectado.then(function(result){
-      let paginaRenderizada = "pagina_inicial_", fotoPerfil = "imagens/usuarios/";
-      
-      //checar qual o tipo do usuário e definir qual das 3 versões da página inicial vai ser aberta
-      if(result["tipo"] ==="Gestor"){paginaRenderizada = paginaRenderizada +"gestor.ejs";}
-      else if(result["tipo"] ==="Afiliado"){paginaRenderizada = paginaRenderizada + "afiliado.ejs";}
-      else{paginaRenderizada = paginaRenderizada + "comum.ejs";}
-      
-      //checar se o usuário já possui uma foto de perfil, utilizar o arquivo "semImagem.png" caso não.
-      if(checarSePfpExiste(result["_id"]) != false){fotoPerfil = fotoPerfil + result["_id"] + ".png";}
-      else{fotoPerfil = fotoPerfil + "semImagem.png";}
+    //salvar dados do usuário que serão utilizados em variáveis (para melhor leitura do código)
+    const tipoUsuario = usuarioConectado.data[0]["tipo"]
+    const idUsuario = usuarioConectado.data[0]["_id"]
 
-      //renderizar página com os dados fornecidos acima
-      res.render(paginaRenderizada, {urlFotoUsuario:fotoPerfil});
+    let paginaRenderizada = "pagina_inicial_", fotoPerfil = "imagens/usuarios/";
+    
+    //checar qual o tipo do usuário e definir qual das 3 versões da página inicial vai ser aberta
+    if(tipoUsuario ==="Gestor"){paginaRenderizada = paginaRenderizada +"gestor.ejs";}
+    else if(tipoUsuario ==="Afiliado"){paginaRenderizada = paginaRenderizada + "afiliado.ejs";}
+    else{paginaRenderizada = paginaRenderizada + "comum.ejs";}
+    
+    //checar se o usuário já possui uma foto de perfil, utilizar o arquivo "semImagem.png" caso não.
+    if(checarSePfpExiste(idUsuario) !== false){fotoPerfil = fotoPerfil + idUsuario + ".png";}
+    else{fotoPerfil = fotoPerfil + "semImagem.png";}
+
+    //renderizar página com os dados fornecidos acima
+    res.render(paginaRenderizada, {urlFotoUsuario:fotoPerfil});
   
-    });
   }
 })
 
 //não permitir nenhum tipo de usuário além do Gestor acessar o painel de controle
 app.get("/pagina_inicial/painelDeControle", (req,res) => {
-  if(usuarioConectado === null){res.redirect("/login")}
+  /*if(usuarioConectado === undefined){res.redirect("/login")}
   else{
-    usuarioConectado.then(function(result){
-      //checar qual o tipo do usuário e definir qual das 3 versões da página inicial vai ser aberta
-      if(result["tipo"] ==="Gestor"){res.sendFile(path.join(__dirname, "\\outrosArquivos\\painel_de_controle.html"));;}
-      else{res.redirect("/pagina_inicial")}
-    });
-  }
+    //redirecionar para a página inicial caso o usuário não seja um Gestor
+    if(usuarioConectado.data[0]["tipo"] ==="Gestor"){res.sendFile(path.join(__dirname, "\\outrosArquivos\\painel_de_controle.html"));}
+    else{res.redirect("/pagina_inicial")}
+  }*/
+  res.sendFile(path.join(__dirname, "\\outrosArquivos\\painel_de_controle.html"));
 })
 
 
@@ -88,18 +89,40 @@ app.get("/pagina_inicial/painelDeControle", (req,res) => {
 app.post("/login", async(req,res) => {
   const usuarioInserido = req.body.inputNome;
   const senhaInserida = req.body.inputSenha;
-  const requisicao = await axios.get("http://localhost:9000/login?usuarioInserido=" + usuarioInserido + "&senhaInserida=" + senhaInserida); 
-  console.log(requisicao.data)
-  /*usuarioConectado.then(function(result){
-    if(result != null){
-      res.redirect("/pagina_inicial");
-    }
-    else{
-      gerarAlerta("Login mal sucedido!", "Houve um erro durante sua tentativa de login! Por favor tente novamente.")
-      res.status(204).send();
-    }
-  })*/
+  usuarioConectado = await axios.get("http://localhost:9000/login?usuarioInserido=" + usuarioInserido + "&senhaInserida=" + senhaInserida); 
+  if(usuarioConectado.data[0] === undefined){
+    gerarAlerta("Login mal sucedido!", "Houve um erro durante sua tentativa de login! Por favor tente novamente.")
+    res.status(204).send();
+  }
+  else{res.redirect("/pagina_inicial");}
   
+})
+
+app.post("/inserirNovoUsuario", async(req,res) => {
+  const tipoUsuario = req.body.inserir_usuario_tipo;
+  if(tipoUsuario == "Gestor" || tipoUsuario == "Afiliado" || tipoUsuario == "Comum"){
+    const id_inserido = req.body.inserir_usuario_id;
+    const usuarioInserido = req.body.inserir_usuario_nome;
+    const senhaInserida = req.body.inserir_usuario_senha;  
+    const retorno= await axios.post("http://localhost:9000/inserirNovoUsuario?idInserido=" + id_inserido + "&usuarioInserido=" + usuarioInserido + "&senhaInserida=" + senhaInserida + "&tipoUsuario=" + tipoUsuario);
+    if(retorno.data[0]["retorno"] === 0){gerarAlerta("Id já utilizado!", "Um outro usuário já possui este mesmo ID.")}
+    else if(retorno.data[0]["retorno"] === 1){gerarAlerta("Nome já usado!", "Um outro usuário já possui este mesmo nome.")}
+    else{gerarAlerta("Sucesso!", "Usuário registrado com sucesso!")}}
+
+  else{gerarAlerta("Tipo inválido!", "Tipo de usuário inválido! Escolha entre \"Gestor\", \"Afiliado\" ou \"Comum\".")}
+  
+  res.status(204).send();
+  }
+  
+)
+
+//deletar usuário do banco de dados através do id inserido
+app.post("/deletarUsuario", async(req,res) => {
+  const id_inserido = req.body.deletar_usuario_id;
+  const retorno= await axios.post("http://localhost:9000/deletarUsuario?idInserido=" + id_inserido);
+  if(retorno.data[0]["retorno"] == false){gerarAlerta("Id inexistente", "Este ID não está ligado a nenhum usuário.")}
+  else{gerarAlerta("Deletado com sucesso!", "Usuário deletado com sucesso!")}
+  res.status(204).send();
 })
 
 //executar servidor na porta 8000
